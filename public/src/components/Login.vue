@@ -38,25 +38,48 @@
 		},
 		methods: {
 			login() {
-				this.loginInfo.username = this.loginInfo.username.trim();
-				this.loginInfo.password = this.loginInfo.password.trim();
+				// this.loginInfo.username = this.loginInfo.username.trim();
+				// this.loginInfo.password = this.loginInfo.password.trim();
+				this.trimInputs(this.loginInfo)
 				if (this.loginInfo.username) {
 					if (this.loginInfo.password.length < 8)
 						alert('password must be at least 8 characters')
 					else
-						this.$store.dispatch('login', { username: this.loginInfo.username, password: this.loginInfo.password })
+						this.$store.dispatch('login', this.loginInfo)
 				} else {
 					alert('must enter user name to login')
 				}
+
+				this.clearInputs();
 			},
 			register() {
-				if (this.registerInfo.username.trim()) {
-					// if (this.registerInfo.email.trim())
+				this.trimInputs(this.registerInfo);
+				if (this.registerInfo.username && this.registerInfo.email && this.registerInfo.password && this.registerInfo.passwordVerif) {
+					if (this.registerInfo.password == this.registerInfo.passwordVerif) {
+						this.$store.dispatch('register', this.registerInfo)
+					} else {
+						alert('passwords must match')
+					}
+				} else {
+					alert('please fill out all fields in the registration form')
 				}
+				this.clearInputs();
+			},
+			trimInputs(obj) {
+				for (let key in obj) {
+					obj[key] = obj[key].trim();
+				}
+			},
+			clearInputs() {
+				this.loginInfo.username = '';
+				this.loginInfo.password = '';
+				this.registerInfo.username = '';
+				this.registerInfo.email = '';
+				this.registerInfo.password = '';
+				this.registerInfo.passwordVerif = '';
 			}
 		}
 	}
-
 </script>
 
 <style scoped>

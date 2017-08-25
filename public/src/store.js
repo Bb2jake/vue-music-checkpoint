@@ -19,6 +19,7 @@ var store = new vuex.Store({
 			state.results = results
 		},
 		setUser(state, payload) {
+			console.log(payload)
 			state.username = payload.username;
 			state.loggedIn = true;
 		}
@@ -78,8 +79,21 @@ var store = new vuex.Store({
 		login({ commit, dispatch }, payload) {
 			$.post(server + '/login', payload)
 				.then(res => {
-					commit('setUser', res)
-				}).fail(res => console.error(res))
+					commit('setUser', res.data)
+				}).fail(res => {
+					console.log(res)
+					alert('Invalid email or password')
+				})
+		},
+		register({ commit, dispatch }, payload) {
+			$.post(server + '/register', payload)
+				.then(res => {
+					console.log(res)
+					commit('setUser', res.data)
+				}).fail(res => {
+					console.log(res)
+					alert(res.error)
+				})
 		}
 
 	}

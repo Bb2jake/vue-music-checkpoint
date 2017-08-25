@@ -1,6 +1,12 @@
 let router = require('express').Router();
 let Users = require('../models/user');
 
+var errorEnum = Object.freeze({
+	DuplicateUsername: "Duplicate user name",
+	DuplicateEmail: "Duplicate email",
+	InvalidCredentials: "Invalid username or password"
+})
+
 router.post('/register', (req, res, next) => {
 	var newUser = req.body
 	Users.find({})
@@ -11,6 +17,7 @@ router.post('/register', (req, res, next) => {
 					req.session.save();
 					user.password = null;
 					delete user.password;
+					delete user.passwordVerif;
 					res.send({
 						message: 'Successfully created user account',
 						data: user
@@ -27,7 +34,7 @@ router.post('/login', (req, res) => {
 			user.validatePassword(req.body.password)
 				.then(valid => {
 					if (!valid) {
-						return res.send({ error: "invalid username or Password" });
+						return res.send(500, { error: errorEnum.InvalidCredentials });
 					}
 					req.session.uid = user._id;
 					req.session.save();
@@ -39,14 +46,11 @@ router.post('/login', (req, res) => {
 					});
 				})
 				.catch(err => {
-					res.send({ error: err || 'Invalid Email or Password' });
+					res.send(500, { error: errorEnum.InvalidCredentials });
 				})
 		})
 		.catch(err => {
-			res.send({
-				error: err,
-				message: 'Invalid Email or Password'
-			});
+			res.send(500, { error: errorEnum.InvalidCredentials });
 		});
 });
 

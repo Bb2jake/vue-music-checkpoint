@@ -27,7 +27,7 @@
 
 		<!-- <router-view></router-view> -->
 		<Home></Home>
-		<Login v-if="showLogin"></Login>
+		<Login v-if="showLogin && !loggedIn"></Login>
 	</div>
 </template>
 
