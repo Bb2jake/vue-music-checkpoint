@@ -76,6 +76,8 @@ Requirements:
 - Implement dragging to reorder your songs and drag to add to favorites
 
 > Stretch Goal: Allow the user to create multiple playlists and manage the songs on each playlist 
+> Stretch Stretch Goal: Use another API that gives full songs, rather than just snippets. (Spotify, Youtube, Google?)
+> Triple Stretch Goal: Integrate with Inspire
 > ***HINT:*** 
 
 ```javascript

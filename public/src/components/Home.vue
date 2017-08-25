@@ -1,36 +1,29 @@
 <template>
-  <div class="home">
-    <!-- YOU WILL PROBABLY END UP WITH SOMETHING LIKE THIS -->
-    <my-tunes class="my-tunes"></my-tunes>
-    <itunes class="itunes"></itunes>
-  </div>
+	<div class="home">
+		<!-- YOU WILL PROBABLY END UP WITH SOMETHING LIKE THIS -->
+		<!-- <my-tunes></my-tunes> -->
+		
+		<search></search>
+	</div>
 </template>
 
 <script>
-export default {
-  name: 'home',
-  data () {
-    return {
-      
-    }
-  }
-}
+	import search from './Search'
+	export default {
+		name: 'home',
+		components: {
+			search
+		},
+		data() {
+			return {
+
+			}
+		}
+	}
 </script>
 
-
-<style>
-.my-tunes{
-  display: inline-block;
-  min-height: 500px;
-  min-width: 50%;
-  background: green;
-}
-
-.itunes{
-  display: inline-block;
-  background: red;
-  min-height: 500px;
-  min-width: 45%;
-}
-
+<style scoped>
+	.home {
+		margin-top: 50px;
+	}
 </style>
