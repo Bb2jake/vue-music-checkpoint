@@ -1,6 +1,7 @@
 var express = require('express')
 var router = express.Router()
 var playlists = require('../models/playlist')
+var songs = require('../models/song')
 
 router
 	// Get all user playlists
@@ -10,28 +11,34 @@ router
 				res.send(playlists)
 			}).catch(next)
 	})
+	.get('/')
+	// Get all songs in a playlist
+	.get('/:playlistId/songs', (req, res, next) => {
+		songs.find({ playlistId: req.params.playlistId })
+			.then(songs => {
+				res.send(songs);
+			}).catch(next);
+	})
 	// Create playlist
 	.post('/', (req, res, next) => {
 		req.body.userId = req.session.uid;
 		playlists.create(req.body)
 			.then(playlist => {
-				playlist.created = Math.floor(Date.now() / 1000);
 				res.send(playlist)
 			}).catch(next)
 	})
-	// .put('/:id/vote', (req, res, next) => {
-	// 	let userVote = req.body.vote;
-	// 	let userId = req.session.uid; // shouldn't this be req.session so it's not spoofable?
-	// 	playlists.findById(req.params.id)
-	// 		.then(playlist => {
-	// 			updateUserVote(playlist, userVote, userId)
-	// 			playlist.save((err, todo) => {
-	// 				res.send(playlist);
-	// 			});
-	// 		}).catch(next)
-	// })
-	.delete('/:id', (req, res, next) => {
-		playlists.findById(req.params.id)
+	// Add song to playlist
+	.post('/:playlistId/songs', (req, res, next) => {
+		req.body.userId = req.session.uid;		
+		songs.create(req.body)
+			.then(song => {
+				res.send(song)
+			}).catch(next)
+	})
+	// Delete playlist
+	.delete('/:playlistId', (req, res, next) => {
+		// TODO: Must first remove all songs from playlist
+		playlists.findById(req.params.playlistId)
 			.then(playlist => {
 				if (req.session.uid.toString() == playlist.userId.toString()) {
 					playlist.remove()
@@ -40,12 +47,21 @@ router
 					res.send({ message: 'You are not authorized to remove this playlist' })
 				}
 			}).catch(next)
-
-		// Below code to empty out database of playlists. DO NOT USE UNLESS YOU KNOW WHAT YOU'RE DOING
-		// playlists.find({}).then(playlists => {
-		// 	playlists.forEach(playlist => playlist.remove())
-		// })
 	})
+	// Remove song from playlist
+	// TODO: What to do if they remove it from all?
+	.delete('/:playlistId/songs/:songId', (req, res, next) => {
+		songs.findById(req.params.id)
+			.then(song => {
+				if (req.session.uid.toString() == song.userId.toString()) {
+					song.remove()
+					res.send({ message: 'Successfully Removed' })
+				} else {
+					res.send({ message: 'You are not authorized to remove this song' })
+				}
+			}).catch(next)
+	})
+
 
 // ERROR HANDLER
 router.use('/', (err, req, res, next) => {

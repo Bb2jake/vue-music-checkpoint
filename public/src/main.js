@@ -3,13 +3,13 @@
 import Vue from 'vue'
 import App from './App'
 import store from './store'
-import Router from 'vue-router'
+import router from './router'
 
 /* eslint-disable no-new */
 new Vue({
 	el: '#app',
-	template: '<App/>',
+	// template: '<App/>',
 	store,
-	Router,
+	router,
 	render: h => h(App)
 })

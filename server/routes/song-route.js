@@ -3,14 +3,6 @@ var router = express.Router()
 var songs = require('../models/song')
 
 router
-	// Get all songs in user's mytunes
-	.get('/', (req, res, next) => {
-		// users.findById(req.session.uid)
-		songs.find({ userId: req.session.uid })
-			.then(songs => {
-				res.send(songs)
-			}).catch(next)
-	})
 	// Add song to user's mytunes
 	.post('/', (req, res, next) => {
 		req.body.userId = req.session.uid;
@@ -19,6 +11,10 @@ router
 				song.created = Math.floor(Date.now() / 1000);
 				res.send(song)
 			}).catch(next)
+	})
+	// Add song to specific playlist
+	.post('/:playlistId', (req, res, next) => {
+		
 	})
 	// .put('/:id/vote', (req, res, next) => {
 	// 	let userVote = req.body.vote;

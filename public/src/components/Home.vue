@@ -3,16 +3,16 @@
 		<!-- YOU WILL PROBABLY END UP WITH SOMETHING LIKE THIS -->
 		<!-- <my-tunes></my-tunes> -->
 		
-		<search></search>
+		<Search></Search>
 	</div>
 </template>
 
 <script>
-	import search from './Search'
+	import Search from './Search'
 	export default {
 		name: 'home',
 		components: {
-			search
+			Search
 		},
 		data() {
 			return {
@@ -23,7 +23,5 @@
 </script>
 
 <style scoped>
-	.home {
-		margin-top: 50px;
-	}
+	
 </style>

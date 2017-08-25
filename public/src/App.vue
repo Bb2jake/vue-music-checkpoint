@@ -16,37 +16,42 @@
 
 				<div class="collapse navbar-collapse navbar-right" id="navbar-header-collapse">
 					<ul class="nav navbar-nav">
-						<li class="active"><a class="action" @click="">Home<span class="sr-only">(current)</span></a></li>
-						<li><a class="action" @click="">MyTunes</a></li>
+						<li class="active"><a class="action" @click=""><router-link :to="{name: 'Home'}">Home</router-link><span class="sr-only">(current)</span></a></li>
+						<li><a class="action"><router-link :to="{name: 'MyTunes.Playlists'}">MyTunes</router-link></a></li>
 						<li v-if="!loggedIn"><a class="action" @click="toggleLoginBox">Login/Register</a></li>
-						<li v-if="loggedIn"><a class="action" @click="toggleLoginBox">{{username}}</a></li>
+						<li v-if="loggedIn"><a class="action">{{username}}</a></li>
+						<li v-if="loggedIn"><a class="action" @click="logout">Logout</a></li>
 					</ul>
 				</div>
 			</div>
 		</nav>
 
-		<!-- <router-view></router-view> -->
-		<Home></Home>
+		<router-view class="router-view"></router-view>
 		<Login v-if="showLogin && !loggedIn"></Login>
 	</div>
 </template>
 
 <script>
-	import Home from './components/Home'
 	import Login from './components/Login'
 	export default {
 		name: 'app',
 		components: {
-			Home, Login
+			Login
 		},
 		data() {
 			return {
 				showLogin: false
 			}
 		},
+		mounted() {
+			this.$store.dispatch('checkForSession')
+		},
 		methods: {
 			toggleLoginBox() {
 				this.showLogin = !this.showLogin;
+			},
+			logout() {
+				this.$store.dispatch('logout')
 			}
 		},
 		computed: {
@@ -98,5 +103,8 @@
 		background: url(./assets/music-background.jpg);
 		background-size: 100vw auto;
 		min-height: 100vh;
+	}
+	.router-view {
+		margin-top: 50px;
 	}
 </style>

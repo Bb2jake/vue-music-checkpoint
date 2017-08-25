@@ -9,8 +9,8 @@ var songSchema = new mongoose.Schema({
 	price: { type: Number, required: true },
 	preview: { type: String, required: true },
 	link: { type: String, required: true },
-	userId: { type: ObjectId, ref: "User", required: true },
-	playlists: { type: Object, default: {} }
+	userId: [{ type: ObjectId, ref: 'User', required: true }],
+	playlists: [{ type: ObjectId, ref: 'Playlist', required: true }] // have default of allSongs or summat
 })
 
 var Song = mongoose.model("Song", songSchema);

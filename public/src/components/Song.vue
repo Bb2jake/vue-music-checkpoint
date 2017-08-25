@@ -15,7 +15,9 @@
 			</div>
 			<div class="price text-center">
 				<button type="button" class="btn btn-primary" @click="openLink">${{song.price}}</button>
-				<button type="button" class="btn btn-primary" @click="addToMyTunes()">Add to MyTunes</button>
+				<button v-if="$route.name == 'Home'" type="button" class="btn btn-primary" @click="addToMyTunes">Add to MyTunes</button>
+				<button v-if="$route.name == 'MyTunes'" type="button" class="btn btn-primary" @click="removeFromMyTunes">Remove from MyTunes</button>
+				<button v-if="$route.name == 'Playlist'" type="button" class="btn btn-primary" @click="removeFromPlaylist">Remove from Playlist</button>
 			</div>
 		</div>
 	</div>
@@ -42,7 +44,10 @@
 				window.open(this.song.link)
 			},
 			addToMyTunes() {
-				console.log(this.song)
+				this.$store.dispatch('addToMyTunes', this.song)
+			},
+			removeFromMyTunes() {
+				this.$store.dispatch('removeFromMyTunes', this.song)
 			}
 		},
 		computed: {
