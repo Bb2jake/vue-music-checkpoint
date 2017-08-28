@@ -54,7 +54,8 @@ var store = new vuex.Store({
 				}
 			})
 				.then(data => {
-					data = JSON.parse(data);
+                    data = JSON.parse(data);
+                    console.log(data);
 					var songList = data.results.map(song => {
 						return {
 							title: song.trackName,
@@ -63,7 +64,8 @@ var store = new vuex.Store({
 							album: song.collectionName,
 							price: song.collectionPrice,
 							preview: song.previewUrl,
-							link: song.trackViewUrl,
+                            link: song.trackViewUrl,
+                            trackId: song.trackId
 						};
 					})
 					commit('setResults', songList)
